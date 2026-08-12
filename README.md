@@ -82,3 +82,21 @@ ações concretas de melhoria na experiência do cliente, com evidências quanti
 recomendações claramente separadas de hipóteses.
  
 ---
+
+## 3. Dados Utilizados (Fictícios)
+ 
+- **Fonte:** dados gerados sinteticamente para fins de estudo/portfólio.
+- **Aviso:** nenhum dado real de clientes, contas, CPF ou informações sensíveis é utilizado.
+- **Estrutura esperada** (ajuste conforme seu dataset):
+
+| Campo | Descrição |
+|---|---|
+| `id_feedback` | Identificador único (fictício) |
+| `canal` | Origem do feedback (app, chat, e-mail...) |
+| `data` | Data do feedback |
+| `produto` | Produto/serviço relacionado |
+| `nota` | Nota numérica (se aplicável) |
+| `texto` | Texto livre do feedback |
+| `sentimento` | Classificação (positivo/neutro/negativo) — se calculado |
+ 
+---
