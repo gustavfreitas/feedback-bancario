@@ -100,3 +100,23 @@ recomendações claramente separadas de hipóteses.
 | `sentimento` | Classificação (positivo/neutro/negativo) — se calculado |
  
 ---
+
+## 4. Metodologia
+ 
+A análise segue um processo estruturado em 8 etapas, definido no prompt mestre do projeto (ver [`docs/PROMPT-METODOLOGIA.md`](docs/PROMPT-METODOLOGIA.md)):
+ 
+1. **Qualidade dos dados** — identificação de nulos, duplicidades, inconsistências e outliers, sem correção silenciosa.
+2. **Análise descritiva** — volumes, distribuição de notas, sentimento, canal, produto, taxa e tempo de resolução.
+3. **Segmentação** — comparação entre produto, canal, período, categoria, sentimento e urgência.
+4. **Análise de problemas** — identificação de problemas recorrentes, críticos e em crescimento.
+5. **Análise de relacionamento** — cruzamentos entre variáveis, sem confundir correlação com causalidade.
+6. **Priorização** — metodologia objetiva combinando volume, impacto, urgência, recorrência e satisfação.
+7. **Insights** — cada um estruturado como fato → evidência → interpretação → hipótese → impacto.
+8. **Recomendações** — ação, responsável, prioridade, impacto esperado e KPI de acompanhamento para cada problema identificado.
+**Papel assumido na análise:** Data Analyst Sênior, Customer Experience Analyst, Business Intelligence Analyst e consultor de tomada de decisão orientada por dados — atuando de forma integrada para transformar feedbacks individuais em padrões mensuráveis e decisões acionáveis.
+ 
+**Regras críticas seguidas:** uso exclusivo dos dados fornecidos (sem inventar números ou causas), separação explícita entre fato/interpretação/hipótese/recomendação, e nenhuma exposição de dados pessoais — reforçando o caráter fictício e sintético de todo o dataset.
+ 
+📄 Prompt completo: [`docs/PROMPT-METODOLOGIA.md`](docs/PROMPT-METODOLOGIA.md)
+ 
+---
