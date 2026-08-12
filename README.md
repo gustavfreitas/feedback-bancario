@@ -120,3 +120,27 @@ A análise segue um processo estruturado em 8 etapas, definido no prompt mestre 
 📄 Prompt completo: [`docs/PROMPT-METODOLOGIA.md`](docs/PROMPT-METODOLOGIA.md)
  
 ---
+
+## 5. Resultados Esperados
+ 
+O relatório final de análise segue o formato definido no prompt mestre, contendo:
+ 
+- **Resumo Executivo** (máx. 5 pontos)
+- **Qualidade dos Dados** (tabela de problemas identificados e tratamento recomendado)
+- **Principais Indicadores** (KPIs com interpretação e relevância)
+- **Principais Problemas** (por produto, volume, impacto, urgência e prioridade)
+- **Principais Insights** (fato → evidência → interpretação → hipótese → impacto)
+- **Recomendações** (ação, responsável, prioridade e KPI de acompanhamento)
+- **Limitações** (o que não pode ser sustentado pelos dados disponíveis)
+- **Próximas Análises** sugeridas
+
+## 6. Limitações
+ 
+- Dados fictícios podem não capturar toda a complexidade de feedbacks reais.
+- Resultados servem para fins de estudo/demonstração, não para decisões reais de negócio.
+
+---
+
+## Autor
+ 
+> [Gustavo Freitas / gu.gusta.freitas@hotmail.com / https://www.linkedin.com/in/gs-freitas/ / https://github.com/gustavfreitas]
