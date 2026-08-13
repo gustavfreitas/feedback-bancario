@@ -140,7 +140,8 @@ O relatório final de análise segue o formato definido no prompt mestre, conten
 - Resultados servem para fins de estudo/demonstração, não para decisões reais de negócio.
 
 ---
-
-## Autor
  
-> [Gustavo Freitas / gu.gusta.freitas@hotmail.com / https://www.linkedin.com/in/gs-freitas/ / https://github.com/gustavfreitas]
+## 👤 Autor
+
+**Gustavo Freitas**
+GitHub: [@gustavfreitas](https://github.com/gustavfreitas)
