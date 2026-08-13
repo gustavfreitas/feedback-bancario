@@ -1,0 +1,39 @@
+[Ação]
+Create a script to create a table in postgresql
+[Contexto]
+the first table is a table to save products services.
+the second table is a table to save channels.
+the third table is a table to save manifestation types.
+
+connect to tables with Foreign Key.
+
+[Informações]
+
+first table: products_services
+- ID
+- Pix
+- Cartão de crédito
+- Conta corrente
+- Aplicativo mobile
+- Empréstimos
+- Atendimento
+- Transferências
+- Pagamentos
+
+second table: channels
+- ID
+- Aplicativo
+- Chat
+- Telefone
+- Agência
+- E-mail
+- WhatsApp
+
+third table: manifestation_types
+- ID
+- Reclamação
+- Elogio
+- Sugestão
+- Dúvida
+- Problema técnico
+- Solicitação
