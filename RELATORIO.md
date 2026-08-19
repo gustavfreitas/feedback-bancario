@@ -126,6 +126,4 @@ Metodologia: `Prioridade = Volume_norm×0,30 + Impacto_norm×0,30 + Urgência_no
 ## Anexos entregues
 
 - `dashboard.html` — painel interativo (4 páginas: Visão Executiva, Customer Experience, Análise de Problemas, Recomendações)
-- `dataset_tratado.csv` — camada de dados limpa e enriquecida com campos derivados (`month`, `is_negative`, `is_csat_positive`, `urgency_weight`, `topic_derived` etc.)
-- `full_analysis.py` — script Python reprodutível (auditoria → limpeza → KPIs → priorização → Pareto → temporal)
-- `dashboard_data.json` — dados agregados usados pelo dashboard
+- `Relatorio.pbix` - arquivo Power Bi para Dashboard (4 páginas: Visão Executiva, Customer Experience, Análise de Problemas, Recomendações)
