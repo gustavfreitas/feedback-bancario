@@ -51,8 +51,8 @@ Fonte: [`gustavfreitas/feedback-bancario`](https://github.com/gustavfreitas/feed
 - **Recomendação:** Atendimento deve auditar scripts e fluxo de escalonamento desses dois canais nos últimos 3 meses antes de qualquer ação genérica de "melhorar atendimento".
 
 **Insight 02 — Agosto/2026 é o ponto mais crítico da série temporal**
-- **Evidência:** nota média de 1,5 e 100% dos 4 feedbacks do mês são negativos — o pior resultado dos 8 meses da série (média geral do período: 34,7% negativo/mês).
-- **Impacto:** se a tendência persistir, o % negativo mensal pode superar o patamar histórico em mais de 30 p.p.
+- **Evidência:** nota média de 1,5 e 100% dos 4 feedbacks do mês são negativos — o pior resultado dos 8 meses da série (média simples dos 8 meses: 44,6% negativo/mês; geral do período: 42,2%).
+- **Impacto:** com apenas 4 feedbacks no mês, o resultado é um alerta, não uma tendência confirmada; vale acompanhar setembro e outubro antes de concluir.
 - **Recomendação:** CX deve revisar individualmente os 4 casos de agosto para descartar causa técnica pontual antes de tratar como tendência (amostra de 4 casos ainda não confirma mudança estrutural).
 
 **Insight 03 — A ausência de dado de produto é a maior lacuna analítica do projeto**

@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Customer Experience — Banco Digital (Dados Fictícios)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<style>
+  :root{
+    --ink:#101826;
+    --ink-soft:#3B4759;
+    --slate:#5B6B82;
+    --line:#D8DEE6;
+    --paper:#F4F6F8;
+    --card:#FFFFFF;
+    --teal:#0F6B66;
+    --teal-soft:#E3F0EE;
+    --brick:#C1443C;
+    --brick-soft:#FBE9E7;
+    --amber:#B9852B;
+    --amber-soft:#FBF1DE;
+    --green:#3F7D53;
+    --green-soft:#E8F3EC;
+    --radius:2px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1180px; margin:0 auto; padding:28px 24px 80px;}
+
+  /* HEADER — ledger statement feel */
+  header.top{
+    border-bottom:2px solid var(--ink);
+    padding-bottom:18px; margin-bottom:6px;
+    display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:10px;
+  }
+  .brand{display:flex; flex-direction:column; gap:2px;}
+  .brand .eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--slate);
+  }
+  .brand h1{
+    font-family:'Fraunces', serif; font-weight:600; font-size:30px; margin:2px 0 0;
+    letter-spacing:-0.01em;
+  }
+  .stamp{
+    font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--slate);
+    text-align:right; line-height:1.6;
+  }
+  .stamp b{color:var(--ink);}
+
+  .disclaimer{
+    font-size:12px; color:var(--slate); border-left:2px solid var(--line);
+    padding:8px 0 8px 12px; margin:14px 0 28px; max-width:820px; line-height:1.55;
+  }
+
+  /* TABS */
+  nav.tabs{
+    display:flex; gap:2px; border-bottom:1px solid var(--line); margin-bottom:26px;
+    font-family:'IBM Plex Mono', monospace;
+  }
+  nav.tabs button{
+    background:none; border:none; cursor:pointer; padding:12px 18px 10px;
+    font-family:inherit; font-size:12.5px; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--slate); border-bottom:2px solid transparent; margin-bottom:-1px;
+    transition:color .15s ease, border-color .15s ease;
+  }
+  nav.tabs button .n{color:var(--slate); margin-right:8px; opacity:.6;}
+  nav.tabs button.active{color:var(--ink); border-bottom-color:var(--ink); font-weight:600;}
+  nav.tabs button:hover{color:var(--ink);}
+
+  .page{display:none;}
+  .page.active{display:block; animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);}}
+
+  h2.section-title{
+    font-family:'Fraunces', serif; font-weight:600; font-size:20px; margin:36px 0 14px;
+    display:flex; align-items:baseline; gap:10px;
+  }
+  h2.section-title:first-child{margin-top:0;}
+  h2.section-title .q{
+    font-family:'IBM Plex Sans', sans-serif; font-weight:400; font-style:italic;
+    font-size:13px; color:var(--slate);
+  }
+
+  /* KPI STRIP */
+  .kpi-strip{
+    display:grid; grid-template-columns:repeat(5,1fr); border:1px solid var(--line);
+    background:var(--card);
+  }
+  .kpi-strip .kpi{
+    padding:18px 16px; border-right:1px solid var(--line); position:relative;
+  }
+  .kpi-strip .kpi:last-child{border-right:none;}
+  .kpi .label{
+    font-family:'IBM Plex Mono', monospace; font-size:10.5px; text-transform:uppercase;
+    letter-spacing:.08em; color:var(--slate); margin-bottom:8px;
+  }
+  .kpi .value{
+    font-family:'IBM Plex Mono', monospace; font-weight:600; font-size:30px; line-height:1;
+    color:var(--ink);
+  }
+  .kpi .value.neg{color:var(--brick);}
+  .kpi .value.pos{color:var(--teal);}
+  .kpi .sub{font-size:11.5px; color:var(--slate); margin-top:7px; line-height:1.4;}
+
+  @media (max-width:900px){
+    .kpi-strip{grid-template-columns:repeat(2,1fr);}
+    .kpi-strip .kpi:nth-child(2n){border-right:none;}
+    .kpi-strip .kpi{border-bottom:1px solid var(--line);}
+  }
+
+  /* GRID / CARDS */
+  .grid2{display:grid; grid-template-columns:1.3fr 1fr; gap:0; border:1px solid var(--line); background:var(--card);}
+  .grid2 > div{padding:20px 22px; border-right:1px solid var(--line);}
+  .grid2 > div:last-child{border-right:none;}
+  .card{border:1px solid var(--line); background:var(--card); padding:20px 22px; margin-bottom:0;}
+  .card h3{
+    font-family:'IBM Plex Mono', monospace; font-size:11px; text-transform:uppercase;
+    letter-spacing:.08em; color:var(--slate); margin:0 0 16px; font-weight:600;
+  }
+  .row3{display:grid; grid-template-columns:repeat(3,1fr); gap:0; border:1px solid var(--line); border-top:none;}
+  .row3 > div{padding:20px 22px; border-right:1px solid var(--line);}
+  .row3 > div:last-child{border-right:none;}
+  @media (max-width:900px){
+    .grid2, .row3{grid-template-columns:1fr;}
+    .grid2 > div, .row3 > div{border-right:none; border-bottom:1px solid var(--line);}
+  }
+  .chart-box{position:relative; height:230px;}
+  .chart-box.tall{height:300px;}
+
+  /* TABLES */
+  table{width:100%; border-collapse:collapse; font-size:13px;}
+  th{
+    font-family:'IBM Plex Mono', monospace; font-size:10.5px; text-transform:uppercase;
+    letter-spacing:.06em; color:var(--slate); text-align:left; font-weight:600;
+    border-bottom:1px solid var(--ink); padding:8px 10px;
+  }
+  td{padding:9px 10px; border-bottom:1px solid var(--line); vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  td.num, th.num{text-align:right; font-family:'IBM Plex Mono', monospace;}
+  .tag{
+    display:inline-block; padding:2px 8px; border-radius:20px; font-size:11px;
+    font-family:'IBM Plex Mono', monospace; white-space:nowrap;
+  }
+  .tag.crit{background:var(--brick-soft); color:var(--brick);}
+  .tag.alto{background:var(--amber-soft); color:var(--amber);}
+  .tag.baixo{background:var(--green-soft); color:var(--green);}
+
+  /* INSIGHTS */
+  .insight{border:1px solid var(--line); background:var(--card); padding:20px 22px; margin-bottom:14px;}
+  .insight .idx{
+    font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--slate); letter-spacing:.06em;
+  }
+  .insight h4{font-family:'Fraunces', serif; font-size:17px; font-weight:600; margin:6px 0 12px;}
+  .insight dl{display:grid; grid-template-columns:110px 1fr; gap:6px 14px; margin:0;}
+  .insight dt{
+    font-family:'IBM Plex Mono', monospace; font-size:10.5px; text-transform:uppercase;
+    letter-spacing:.06em; color:var(--slate); padding-top:2px;
+  }
+  .insight dd{margin:0; font-size:13.5px; line-height:1.55; color:var(--ink-soft);}
+
+  /* RECOMMENDATION AREAS */
+  .area-block{border:1px solid var(--line); background:var(--card); margin-bottom:14px;}
+  .area-block .area-head{
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px; text-transform:uppercase;
+    letter-spacing:.08em; font-weight:600; padding:10px 18px; background:var(--ink); color:#fff;
+  }
+  .area-block table{margin:0;}
+  .area-block td, .area-block th{padding:10px 18px;}
+
+  footer.foot{
+    margin-top:50px; padding-top:16px; border-top:1px solid var(--line);
+    font-size:11.5px; color:var(--slate); display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;
+  }
+  .caveat{font-size:11px; color:var(--slate); font-style:italic; margin-top:8px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="brand">
+      <span class="eyebrow">Extrato Analítico · Customer Experience</span>
+      <h1>Feedback Bancário — Painel de Experiência do Cliente</h1>
+    </div>
+    <div class="stamp">
+      Fonte: <b>load/relatorio_completo_etl.xlsx</b><br>
+      Período: <b>jan/2026 – ago/2026</b> · N = <b>45</b> manifestações
+    </div>
+  </header>
+
+  <p class="disclaimer">
+    Este painel utiliza dados sintéticos para simular uma operação de Customer Experience de uma
+    instituição financeira. As métricas e metodologias seguem práticas reais de análise de dados e
+    experiência do cliente, porém os resultados não representam uma instituição financeira real.
+    Amostra pequena (n=45) — leia percentuais como indicativos, não conclusivos.
+  </p>
+
+  <nav class="tabs">
+    <button class="active" data-page="p1"><span class="n">01</span>Visão Executiva</button>
+    <button data-page="p2"><span class="n">02</span>Customer Experience</button>
+    <button data-page="p3"><span class="n">03</span>Análise de Problemas</button>
+    <button data-page="p4"><span class="n">04</span>Recomendações</button>
+  </nav>
+
+  <!-- ============ PÁGINA 1 — VISÃO EXECUTIVA ============ -->
+  <section class="page active" id="p1">
+
+    <div class="kpi-strip">
+      <div class="kpi">
+        <div class="label">Total de feedbacks</div>
+        <div class="value" id="k-total">–</div>
+        <div class="sub">Volume da demanda analisada no período</div>
+      </div>
+      <div class="kpi">
+        <div class="label">CSAT (nota ≥ 4)</div>
+        <div class="value pos" id="k-csat">–</div>
+        <div class="sub">% de avaliações no top-2-box da escala 1–5</div>
+      </div>
+      <div class="kpi">
+        <div class="label">Nota média</div>
+        <div class="value" id="k-nota">–</div>
+        <div class="sub">Escala 1–5 · mediana igual à média</div>
+      </div>
+      <div class="kpi">
+        <div class="label">% Negativo</div>
+        <div class="value neg" id="k-neg">–</div>
+        <div class="sub">Parcela da experiência gerando insatisfação</div>
+      </div>
+      <div class="kpi">
+        <div class="label">Principal problema</div>
+        <div class="value" style="font-size:17px; line-height:1.25; font-family:'Fraunces',serif; font-weight:600;">Reclamações via Telefone e WhatsApp</div>
+        <div class="sub">Maior score de prioridade combinada</div>
+      </div>
+    </div>
+
+    <h2 class="section-title">Evolução da satisfação <span class="q">— a experiência está melhorando ou piorando?</span></h2>
+    <div class="grid2">
+      <div><div class="chart-box"><canvas id="chartTemporal"></canvas></div></div>
+      <div>
+        <h3>Leitura do período</h3>
+        <p style="font-size:13.5px; line-height:1.6; color:var(--ink-soft); margin-top:0;">
+          A nota média oscila entre 1,5 e 3,8 mês a mês, sem uma tendência linear estável — típico de
+          amostra pequena (5–6 casos/mês). O ponto de maior atenção é <b>agosto/2026</b>: nota média de
+          1,5 e 100% dos 4 feedbacks do mês são negativos, o pior resultado da série. Com apenas 4
+          registros, isso ainda não confirma uma mudança estrutural, mas é o mês que mais justifica
+          checagem imediata antes do fechamento do próximo ciclo.
+        </p>
+      </div>
+    </div>
+
+    <h2 class="section-title">Distribuição de sentimento <span class="q">— como a base se divide?</span></h2>
+    <div class="row3">
+      <div><div class="chart-box"><canvas id="chartSentimento"></canvas></div></div>
+      <div>
+        <h3>Nota média por sentimento</h3>
+        <table>
+          <tr><td>Negativo</td><td class="num" id="ns-neg">–</td></tr>
+          <tr><td>Neutro</td><td class="num" id="ns-neu">–</td></tr>
+          <tr><td>Positivo</td><td class="num" id="ns-pos">–</td></tr>
+        </table>
+        <p style="font-size:12px; color:var(--slate); margin-top:12px; line-height:1.5;">
+          A separação limpa entre as três médias confirma que a nota de satisfação é consistente com o
+          sentimento rotulado — validação interna dos dados, não um insight de negócio.
+        </p>
+      </div>
+      <div>
+        <h3>Pareto — canais mais associados a negativos</h3>
+        <div class="chart-box"><canvas id="chartPareto"></canvas></div>
+      </div>
+    </div>
+
+    <h2 class="section-title">Top problemas &amp; produtos mais críticos</h2>
+    <div class="grid2">
+      <div>
+        <h3>Ranking de prioridade (Tipo × Canal)</h3>
+        <table id="tbl-top5"><thead>
+          <tr><th>Problema</th><th>Canal</th><th class="num">Vol.</th><th class="num">Score</th><th>Classe</th></tr>
+        </thead><tbody></tbody></table>
+      </div>
+      <div>
+        <h3>Tópicos derivados do texto (proxy de produto)</h3>
+        <table id="tbl-topico"><thead>
+          <tr><th>Tópico</th><th class="num">Vol.</th><th class="num">% neg.</th></tr>
+        </thead><tbody></tbody></table>
+        <p class="caveat">Campo estruturado de produto não foi populado na base (ver Metodologia). Tópicos
+        estimados por palavra-chave no texto do feedback — tratar como heurística, não como dado oficial.</p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============ PÁGINA 2 — CUSTOMER EXPERIENCE ============ -->
+  <section class="page" id="p2">
+
+    <h2 class="section-title">Satisfação por categoria de manifestação</h2>
+    <div class="grid2">
+      <div><div class="chart-box tall"><canvas id="chartTipo"></canvas></div></div>
+      <div>
+        <h3>Leitura</h3>
+        <p style="font-size:13.5px; line-height:1.6; color:var(--ink-soft); margin-top:0;">
+          Reclamação (12 casos, nota 1,50) e Problema Técnico (7 casos, nota 1,86) concentram 100% dos
+          feedbacks negativos e toda a urgência alta/crítica da base. Elogio, Sugestão, Dúvida e
+          Solicitação não registram nenhum caso negativo — o problema de insatisfação está inteiramente
+          contido nessas duas categorias, o que simplifica onde direcionar esforço de correção.
+        </p>
+      </div>
+    </div>
+
+    <h2 class="section-title">Distribuição de notas (1–5)</h2>
+    <div class="row3">
+      <div><div class="chart-box"><canvas id="chartNotas"></canvas></div></div>
+      <div>
+        <h3>Forma da distribuição</h3>
+        <p style="font-size:13px; line-height:1.6; color:var(--ink-soft); margin-top:0;">
+          A distribuição é bimodal, não normal: pico em nota 2 (12 casos) e um segundo agrupamento em
+          notas 4–5 (17 casos). A nota média de 3,0 esconde essa polarização — clientes tendem a estar
+          claramente satisfeitos ou claramente insatisfeitos, com poucos neutros genuínos (nota 3, 9 casos).
+        </p>
+      </div>
+      <div>
+        <h3>Indicadores de satisfação</h3>
+        <table>
+          <tr><td>CSAT (nota ≥ 4)</td><td class="num" id="ce-csat">–</td></tr>
+          <tr><td>Taxa de reclamação</td><td class="num" id="ce-reclam">–</td></tr>
+          <tr><td>% urgência alta/crítica</td><td class="num" id="ce-urg">–</td></tr>
+          <tr><td>NPS</td><td class="num">N/A*</td></tr>
+        </table>
+        <p class="caveat">*Escala de satisfação é 1–5, incompatível com a metodologia NPS (0–10). NPS não
+        calculável com os dados disponíveis.</p>
+      </div>
+    </div>
+
+    <h2 class="section-title">Comparação por canal</h2>
+    <div class="grid2">
+      <div><div class="chart-box tall"><canvas id="chartCanal"></canvas></div></div>
+      <div>
+        <h3>Canal com maior volume</h3>
+        <p style="font-size:13px; color:var(--ink-soft); margin:0 0 14px;">Aplicativo, Telefone e WhatsApp empatados, 8 manifestações cada.</p>
+        <h3>Canal com maior % negativo</h3>
+        <p style="font-size:13px; color:var(--ink-soft); margin:0 0 14px;">Aplicativo, Telefone e WhatsApp empatados, 50% cada — nenhum canal isolado domina; o problema é transversal.</p>
+        <h3>Canal com melhor desempenho relativo</h3>
+        <p style="font-size:13px; color:var(--ink-soft); margin:0;">Agência e Chat, 28,6% de negativos cada — mas com composições diferentes (Agência tem mais elogios; Chat tem mais dúvidas/solicitações neutras).</p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============ PÁGINA 3 — ANÁLISE DE PROBLEMAS ============ -->
+  <section class="page" id="p3">
+
+    <h2 class="section-title">Ranking de problemas <span class="q">— por score de prioridade combinada</span></h2>
+    <div class="card">
+      <table id="tbl-priorizacao"><thead>
+        <tr><th>Problema</th><th>Canal</th><th class="num">Vol.</th><th class="num">Nota média</th><th class="num">Urgência (0–3)</th><th class="num">Meses</th><th class="num">Score</th><th>Classe</th></tr>
+      </thead><tbody></tbody></table>
+      <p class="caveat" style="margin-top:14px;">
+        Prioridade = Volume<sub>norm</sub>×0,30 + Impacto<sub>norm</sub>×0,30 + Urgência<sub>norm</sub>×0,25 + Recorrência<sub>norm</sub>×0,15,
+        normalizado dentro do conjunto de 12 combinações Tipo×Canal com reclamação/problema técnico.
+        Impacto = (5 − nota média) / 4. Pesos maiores em volume e impacto porque gravidade deve pesar tanto
+        quanto frequência; recorrência com peso menor pela base temporal curta (8 meses).
+      </p>
+    </div>
+
+    <h2 class="section-title">Matriz Impacto × Urgência <span class="q">— tamanho da bolha = volume</span></h2>
+    <div class="grid2">
+      <div><div class="chart-box tall"><canvas id="chartMatriz"></canvas></div></div>
+      <div>
+        <h3>Como ler</h3>
+        <p style="font-size:13px; line-height:1.6; color:var(--ink-soft); margin-top:0;">
+          Eixo X: urgência média do grupo (0=baixa a 3=crítica). Eixo Y: impacto na nota
+          (0=nota alta/pouco impacto a 4=nota 1/impacto máximo). Quadrante superior-direito concentra
+          os grupos mais críticos: Reclamação×Telefone e Reclamação×WhatsApp aparecem isolados nesse
+          quadrante, com volume e recorrência (2–3 meses) que os diferenciam de casos pontuais como
+          Problema Técnico×Agência (1 caso, 1 mês só).
+        </p>
+      </div>
+    </div>
+
+    <h2 class="section-title">Concentração dos negativos por canal</h2>
+    <div class="grid2">
+      <div><div class="chart-box"><canvas id="chartParetoP3"></canvas></div></div>
+      <div>
+        <h3>Não há concentração 80/20 clássica</h3>
+        <p style="font-size:13px; line-height:1.6; color:var(--ink-soft); margin-top:0;">
+          Os 19 feedbacks negativos se distribuem de forma relativamente uniforme entre os 6 canais
+          (10,5% a 21,1% cada). Os 3 canais mais afetados — WhatsApp, Telefone e Aplicativo — somam
+          63,3% dos negativos, mas isso é metade dos canais concentrando quase dois terços do problema,
+          não uma concentração extrema em 1–2 pontos. Conclusão prática: uma correção pontual em um
+          único canal não resolveria a maior parte do problema.
+        </p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============ PÁGINA 4 — RECOMMENDATIONS ============ -->
+  <section class="page" id="p4">
+
+    <h2 class="section-title">Insights executivos</h2>
+    <div id="insights-wrap"></div>
+
+    <h2 class="section-title">Recomendações por área</h2>
+    <div id="areas-wrap"></div>
+
+    <h2 class="section-title">Se eu fosse o gestor de CX deste banco…</h2>
+    <div class="card">
+      <p style="font-size:14px; line-height:1.7; color:var(--ink-soft); margin:0;">
+        Os <b>3 problemas a atacar primeiro</b> são: <b>(1)</b> reclamações via Telefone e WhatsApp
+        (score de prioridade 0,74 e 0,73 — os únicos dois grupos recorrentes há 2–3 meses, não pontuais);
+        <b>(2)</b> a queda abrupta de agosto/2026 (nota 1,5, 100% negativo em 4 casos), que precisa de
+        checagem imediata para descartar uma causa técnica isolada antes de virar tendência; e
+        <b>(3)</b> a ausência de dados de produto, que impede saber hoje se Pix, cartão ou app concentram
+        o maior risco — a estimativa por palavras-chave aponta Pix (66,7% negativo, n=3) como sinal de
+        atenção, mas com amostra pequena demais para decisão.
+      </p>
+    </div>
+
+  </section>
+
+  <footer class="foot">
+    <span>Feedback Bancário CX Dashboard · dados sintéticos · gerado a partir de load/relatorio_completo_etl.xlsx</span>
+    <span>Metodologia completa no relatório final anexo</span>
+  </footer>
+
+</div>
+
+<script>
+const DATA = {"kpi": {"total_feedbacks": 45, "nota_media": 3.0, "nota_mediana": 3.0, "csat_pct": 37.8, "pct_negativo": 42.2, "pct_positivo": 37.8, "pct_neutro": 20.0, "taxa_reclamacao": 26.7, "pct_urgencia_alta_critica": 42.2, "nps_calculavel": false, "nps_motivo": "Escala de satisfacao vai de 1 a 5, incompativel com a metodologia NPS (0-10). NPS nao calculavel com os dados disponiveis."}, "nota_por_sentimento": {"negativo": 1.63, "neutro": 3.0, "positivo": 4.53}, "canal": [{"channel_name": "Aplicativo", "volume": 8, "nota_media": 3.0, "pct_negativo": 50.0, "pct_positivo": 37.5, "urgencia_media": 1.25}, {"channel_name": "WhatsApp", "volume": 8, "nota_media": 2.88, "pct_negativo": 50.0, "pct_positivo": 37.5, "urgencia_media": 1.25}, {"channel_name": "Telefone", "volume": 8, "nota_media": 3.0, "pct_negativo": 50.0, "pct_positivo": 50.0, "urgencia_media": 1.25}, {"channel_name": "E-mail", "volume": 7, "nota_media": 2.86, "pct_negativo": 42.9, "pct_positivo": 14.3, "urgencia_media": 1.29}, {"channel_name": "Agência", "volume": 7, "nota_media": 3.14, "pct_negativo": 28.6, "pct_positivo": 57.1, "urgencia_media": 1.0}, {"channel_name": "Chat", "volume": 7, "nota_media": 3.14, "pct_negativo": 28.6, "pct_positivo": 28.6, "urgencia_media": 1.0}], "tipo": [{"type_name": "Reclamação", "volume": 12, "nota_media": 1.5, "pct_negativo": 100.0, "urgencia_media": 2.42}, {"type_name": "Elogio", "volume": 11, "nota_media": 4.82, "pct_negativo": 0.0, "urgencia_media": 0.0}, {"type_name": "Problema Técnico", "volume": 7, "nota_media": 1.86, "pct_negativo": 100.0, "urgencia_media": 2.14}, {"type_name": "Sugestão", "volume": 6, "nota_media": 4.0, "pct_negativo": 0.0, "urgencia_media": 0.0}, {"type_name": "Dúvida", "volume": 5, "nota_media": 3.0, "pct_negativo": 0.0, "urgencia_media": 1.0}, {"type_name": "Solicitação", "volume": 4, "nota_media": 3.0, "pct_negativo": 0.0, "urgencia_media": 1.0}], "topico": [{"topic_derived": "Outros/Não classificado", "volume": 9, "nota_media": 3.78, "pct_negativo": 33.3}, {"topic_derived": "Atendimento/Processo", "volume": 8, "nota_media": 2.75, "pct_negativo": 50.0}, {"topic_derived": "Aplicativo/App", "volume": 7, "nota_media": 3.0, "pct_negativo": 57.1}, {"topic_derived": "Cartão", "volume": 5, "nota_media": 2.4, "pct_negativo": 40.0}, {"topic_derived": "Empréstimo", "volume": 5, "nota_media": 3.4, "pct_negativo": 20.0}, {"topic_derived": "Tarifas/Conta", "volume": 4, "nota_media": 2.75, "pct_negativo": 25.0}, {"topic_derived": "Transferência", "volume": 4, "nota_media": 2.75, "pct_negativo": 50.0}, {"topic_derived": "Pix", "volume": 3, "nota_media": 2.33, "pct_negativo": 66.7}], "priorizacao": [{"type_name": "Reclamação", "channel_name": "Telefone", "volume": 3, "nota_media": 1.3333333333333333, "urgencia_media": 2.6666666666666665, "meses_distintos": 2, "prioridade_score": 0.742, "classe": "🔴 Crítico"}, {"type_name": "Reclamação", "channel_name": "WhatsApp", "volume": 3, "nota_media": 1.3333333333333333, "urgencia_media": 2.3333333333333335, "meses_distintos": 3, "prioridade_score": 0.733, "classe": "🔴 Crítico"}, {"type_name": "Problema Técnico", "channel_name": "Agência", "volume": 1, "nota_media": 1.0, "urgencia_media": 3.0, "meses_distintos": 1, "prioridade_score": 0.55, "classe": "🟠 Alto"}, {"type_name": "Reclamação", "channel_name": "Agência", "volume": 1, "nota_media": 1.0, "urgencia_media": 3.0, "meses_distintos": 1, "prioridade_score": 0.55, "classe": "🟠 Alto"}, {"type_name": "Reclamação", "channel_name": "Aplicativo", "volume": 2, "nota_media": 1.5, "urgencia_media": 2.5, "meses_distintos": 2, "prioridade_score": 0.5, "classe": "🟠 Alto"}, {"type_name": "Reclamação", "channel_name": "E-mail", "volume": 2, "nota_media": 2.0, "urgencia_media": 2.0, "meses_distintos": 2, "prioridade_score": 0.225, "classe": "🟢 Baixo"}, {"type_name": "Problema Técnico", "channel_name": "Aplicativo", "volume": 2, "nota_media": 2.0, "urgencia_media": 2.0, "meses_distintos": 2, "prioridade_score": 0.225, "classe": "🟢 Baixo"}, {"type_name": "Problema Técnico", "channel_name": "Chat", "volume": 1, "nota_media": 2.0, "urgencia_media": 2.0, "meses_distintos": 1, "prioridade_score": 0.0, "classe": "🟢 Baixo"}, {"type_name": "Problema Técnico", "channel_name": "E-mail", "volume": 1, "nota_media": 2.0, "urgencia_media": 2.0, "meses_distintos": 1, "prioridade_score": 0.0, "classe": "🟢 Baixo"}, {"type_name": "Problema Técnico", "channel_name": "WhatsApp", "volume": 1, "nota_media": 2.0, "urgencia_media": 2.0, "meses_distintos": 1, "prioridade_score": 0.0, "classe": "🟢 Baixo"}, {"type_name": "Problema Técnico", "channel_name": "Telefone", "volume": 1, "nota_media": 2.0, "urgencia_media": 2.0, "meses_distintos": 1, "prioridade_score": 0.0, "classe": "🟢 Baixo"}, {"type_name": "Reclamação", "channel_name": "Chat", "volume": 1, "nota_media": 2.0, "urgencia_media": 2.0, "meses_distintos": 1, "prioridade_score": 0.0, "classe": "🟢 Baixo"}], "temporal": [{"month": "2026-01", "volume": 6, "nota_media": 2.83, "pct_negativo": 33.3}, {"month": "2026-02", "volume": 6, "nota_media": 3.83, "pct_negativo": 16.7}, {"month": "2026-03", "volume": 6, "nota_media": 2.5, "pct_negativo": 66.7}, {"month": "2026-04", "volume": 6, "nota_media": 2.83, "pct_negativo": 33.3}, {"month": "2026-05", "volume": 6, "nota_media": 2.83, "pct_negativo": 33.3}, {"month": "2026-06", "volume": 6, "nota_media": 3.5, "pct_negativo": 33.3}, {"month": "2026-07", "volume": 5, "nota_media": 3.8, "pct_negativo": 40.0}, {"month": "2026-08", "volume": 4, "nota_media": 1.5, "pct_negativo": 100.0}], "pareto_tipo": [{"motivo": "Reclamação", "qtd": 12, "pct": 63.2, "pct_acum": 63.2}, {"motivo": "Problema Técnico", "qtd": 7, "pct": 36.8, "pct_acum": 100.0}], "pareto": [{"motivo": "WhatsApp", "qtd": 4, "pct": 21.1, "pct_acum": 21.1}, {"motivo": "Telefone", "qtd": 4, "pct": 21.1, "pct_acum": 42.2}, {"motivo": "Aplicativo", "qtd": 4, "pct": 21.1, "pct_acum": 63.3}, {"motivo": "E-mail", "qtd": 3, "pct": 15.8, "pct_acum": 79.1}, {"motivo": "Agência", "qtd": 2, "pct": 10.5, "pct_acum": 89.6}, {"motivo": "Chat", "qtd": 2, "pct": 10.5, "pct_acum": 100.1}], "distribuicao_notas": [{"nota": 1, "qtd": 7}, {"nota": 2, "qtd": 12}, {"nota": 3, "qtd": 9}, {"nota": 4, "qtd": 8}, {"nota": 5, "qtd": 9}]}
+;
+
+// ---- Chart.js defaults (tema do painel) ----
+Chart.defaults.font.family = "'IBM Plex Sans', sans-serif";
+Chart.defaults.font.size = 11.5;
+Chart.defaults.color = '#5B6B82';
+Chart.defaults.plugins.legend.display = false;
+Chart.defaults.borderColor = '#D8DEE6';
+
+const INK = '#101826', TEAL='#0F6B66', BRICK='#C1443C', AMBER='#B9852B', GREEN='#3F7D53', SLATE='#5B6B82', LINE='#D8DEE6';
+
+function fmtPct(v){ return v.toFixed(1).replace('.', ',') + '%'; }
+function fmtNum(v){ return v.toFixed(2).replace('.', ','); }
+
+// ---- KPIs ----
+document.getElementById('k-total').textContent = DATA.kpi.total_feedbacks;
+document.getElementById('k-csat').textContent = fmtPct(DATA.kpi.csat_pct);
+document.getElementById('k-nota').textContent = fmtNum(DATA.kpi.nota_media) + ' / 5';
+document.getElementById('k-neg').textContent = fmtPct(DATA.kpi.pct_negativo);
+
+document.getElementById('ns-neg').textContent = fmtNum(DATA.nota_por_sentimento.negativo);
+document.getElementById('ns-neu').textContent = fmtNum(DATA.nota_por_sentimento.neutro);
+document.getElementById('ns-pos').textContent = fmtNum(DATA.nota_por_sentimento.positivo);
+
+document.getElementById('ce-csat').textContent = fmtPct(DATA.kpi.csat_pct);
+document.getElementById('ce-reclam').textContent = fmtPct(DATA.kpi.taxa_reclamacao);
+document.getElementById('ce-urg').textContent = fmtPct(DATA.kpi.pct_urgencia_alta_critica);
+
+// ---- Tabs ----
+document.querySelectorAll('nav.tabs button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.page).classList.add('active');
+  });
+});
+
+// ---- Chart 1: Temporal (linha) ----
+new Chart(document.getElementById('chartTemporal'), {
+  type:'line',
+  data:{
+    labels: DATA.temporal.map(d=>d.month.slice(5)+'/26'),
+    datasets:[
+      {label:'Nota média', data: DATA.temporal.map(d=>d.nota_media), borderColor:INK, backgroundColor:'transparent', tension:.25, pointRadius:3, pointBackgroundColor:INK, yAxisID:'y'},
+      {label:'% Negativo', data: DATA.temporal.map(d=>d.pct_negativo), borderColor:BRICK, backgroundColor:'transparent', borderDash:[4,3], tension:.25, pointRadius:3, pointBackgroundColor:BRICK, yAxisID:'y1'}
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{display:true, position:'top', align:'end', labels:{boxWidth:10, usePointStyle:true}}},
+    scales:{
+      y:{min:0,max:5, grid:{color:LINE}, title:{display:true,text:'Nota (1–5)',font:{size:10}}},
+      y1:{min:0,max:100, position:'right', grid:{display:false}, title:{display:true,text:'% negativo',font:{size:10}}},
+      x:{grid:{display:false}}
+    }
+  }
+});
+
+// ---- Chart 2: Sentimento ----
+new Chart(document.getElementById('chartSentimento'), {
+  type:'bar',
+  data:{
+    labels:['Positivo','Neutro','Negativo'],
+    datasets:[{data:[DATA.kpi.pct_positivo, DATA.kpi.pct_neutro, DATA.kpi.pct_negativo], backgroundColor:[TEAL, SLATE, BRICK], borderRadius:2, maxBarThickness:60}]
+  },
+  options:{responsive:true, maintainAspectRatio:false,
+    scales:{y:{min:0,max:60, grid:{color:LINE}, ticks:{callback:v=>v+'%'}}, x:{grid:{display:false}}}}
+});
+
+// ---- Chart 3: Pareto p1 (canal) ----
+function paretoChart(canvasId){
+  return new Chart(document.getElementById(canvasId), {
+    data:{
+      labels: DATA.pareto.map(d=>d.motivo),
+      datasets:[
+        {type:'bar', label:'Feedbacks negativos', data: DATA.pareto.map(d=>d.qtd), backgroundColor: BRICK, borderRadius:2, order:2, yAxisID:'y'},
+        {type:'line', label:'% acumulado', data: DATA.pareto.map(d=>d.pct_acum), borderColor: INK, backgroundColor:'transparent', tension:.2, pointRadius:3, pointBackgroundColor:INK, order:1, yAxisID:'y1'}
+      ]
+    },
+    options:{responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:true, position:'top', align:'end', labels:{boxWidth:10, usePointStyle:true, font:{size:10}}}},
+      scales:{
+        y:{beginAtZero:true, grid:{color:LINE}, title:{display:true,text:'Qtd.',font:{size:10}}},
+        y1:{min:0,max:100, position:'right', grid:{display:false}, ticks:{callback:v=>v+'%'}},
+        x:{grid:{display:false}}
+      }}
+  });
+}
+paretoChart('chartPareto');
+paretoChart('chartParetoP3');
+
+// ---- Tabela top5 priorizacao (p1) ----
+(function(){
+  const tb = document.querySelector('#tbl-top5 tbody');
+  DATA.priorizacao.slice(0,5).forEach(r=>{
+    const cls = r.classe.includes('Crítico') ? 'crit' : r.classe.includes('Alto') ? 'alto' : 'baixo';
+    const label = r.classe.replace(/[🔴🟠🟡🟢]/g,'').trim();
+    tb.innerHTML += `<tr><td>${r.type_name}</td><td>${r.channel_name}</td><td class="num">${r.volume}</td><td class="num">${r.prioridade_score.toFixed(3)}</td><td><span class="tag ${cls}">${label}</span></td></tr>`;
+  });
+})();
+
+// ---- Tabela topico (p1) ----
+(function(){
+  const tb = document.querySelector('#tbl-topico tbody');
+  DATA.topico.forEach(r=>{
+    tb.innerHTML += `<tr><td>${r.topic_derived}</td><td class="num">${r.volume}</td><td class="num">${fmtPct(r.pct_negativo)}</td></tr>`;
+  });
+})();
+
+// ---- Chart Tipo (p2) ----
+new Chart(document.getElementById('chartTipo'), {
+  type:'bar',
+  data:{
+    labels: DATA.tipo.map(d=>d.type_name),
+    datasets:[{label:'Nota média', data: DATA.tipo.map(d=>d.nota_media), backgroundColor: DATA.tipo.map(d=>d.pct_negativo>0?BRICK:TEAL), borderRadius:2}]
+  },
+  options:{indexAxis:'y', responsive:true, maintainAspectRatio:false,
+    scales:{x:{min:0,max:5, grid:{color:LINE}}, y:{grid:{display:false}}}}
+});
+
+// ---- Chart Notas (p2) ----
+new Chart(document.getElementById('chartNotas'), {
+  type:'bar',
+  data:{
+    labels: DATA.distribuicao_notas.map(d=>'Nota '+d.nota),
+    datasets:[{data: DATA.distribuicao_notas.map(d=>d.qtd), backgroundColor: DATA.distribuicao_notas.map(d=>d.nota<=2?BRICK:d.nota===3?SLATE:TEAL), borderRadius:2}]
+  },
+  options:{responsive:true, maintainAspectRatio:false,
+    scales:{y:{beginAtZero:true, grid:{color:LINE}}, x:{grid:{display:false}}}}
+});
+
+// ---- Chart Canal (p2) ----
+new Chart(document.getElementById('chartCanal'), {
+  type:'bar',
+  data:{
+    labels: DATA.canal.map(d=>d.channel_name),
+    datasets:[
+      {label:'% negativo', data: DATA.canal.map(d=>d.pct_negativo), backgroundColor: BRICK, borderRadius:2},
+      {label:'% positivo', data: DATA.canal.map(d=>d.pct_positivo), backgroundColor: TEAL, borderRadius:2}
+    ]
+  },
+  options:{indexAxis:'y', responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{display:true, position:'top', align:'end', labels:{boxWidth:10, usePointStyle:true, font:{size:10}}}},
+    scales:{x:{min:0,max:60, grid:{color:LINE}, ticks:{callback:v=>v+'%'}}, y:{grid:{display:false}}}}
+});
+
+// ---- Tabela priorizacao completa (p3) ----
+(function(){
+  const tb = document.querySelector('#tbl-priorizacao tbody');
+  DATA.priorizacao.forEach(r=>{
+    const cls = r.classe.includes('Crítico') ? 'crit' : r.classe.includes('Alto') ? 'alto' : 'baixo';
+    const label = r.classe.replace(/[🔴🟠🟡🟢]/g,'').trim();
+    tb.innerHTML += `<tr><td>${r.type_name}</td><td>${r.channel_name}</td><td class="num">${r.volume}</td><td class="num">${fmtNum(r.nota_media)}</td><td class="num">${fmtNum(r.urgencia_media)}</td><td class="num">${r.meses_distintos}</td><td class="num">${r.prioridade_score.toFixed(3)}</td><td><span class="tag ${cls}">${label}</span></td></tr>`;
+  });
+})();
+
+// ---- Matriz Impacto x Urgencia (bubble, p3) ----
+new Chart(document.getElementById('chartMatriz'), {
+  type:'bubble',
+  data:{
+    datasets:[{
+      label:'Grupos (Tipo × Canal)',
+      data: DATA.priorizacao.map(r=>({x:r.urgencia_media, y:(5-r.nota_media), r: 6+r.volume*4, _label:r.type_name+' · '+r.channel_name})),
+      backgroundColor: DATA.priorizacao.map(r=> r.classe.includes('Crítico')?'rgba(193,68,60,.65)' : r.classe.includes('Alto')?'rgba(185,133,43,.6)' : 'rgba(91,107,130,.4)'),
+      borderColor: DATA.priorizacao.map(r=> r.classe.includes('Crítico')?BRICK : r.classe.includes('Alto')?AMBER : SLATE),
+      borderWidth:1.5
+    }]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{
+      legend:{display:false},
+      tooltip:{callbacks:{label:(ctx)=> ctx.raw._label + ' — urgência '+ctx.raw.x.toFixed(2)+', impacto '+ctx.raw.y.toFixed(2) }}
+    },
+    scales:{
+      x:{min:0,max:3.2, title:{display:true,text:'Urgência média (0=baixa, 3=crítica)',font:{size:10}}, grid:{color:LINE}},
+      y:{min:0,max:4.2, title:{display:true,text:'Impacto (5 − nota média)',font:{size:10}}, grid:{color:LINE}}
+    }
+  }
+});
+
+// ---- Insights executivos (p4) ----
+const insights = [
+  {
+    n:'Insight 01', t:'Reclamações por Telefone e WhatsApp são o único risco recorrente',
+    problema:'Reclamações via Telefone e WhatsApp concentram os dois maiores scores de prioridade (0,74 e 0,73) entre as 12 combinações Tipo×Canal analisadas.',
+    evidencia:'3 reclamações por canal, nota média 1,33, urgência média acima de 2,3 (escala 0–3), e recorrência em 2–3 meses distintos — os únicos dois grupos com recorrência multi-mês entre os problemas de alta prioridade.',
+    impacto:'Juntos, esses dois grupos representam 6 dos 12 casos de Reclamação/Problema Técnico com prioridade Alta ou Crítica.',
+    acao:'Área de Atendimento deve auditar os scripts e o fluxo de escalonamento de Telefone e WhatsApp nos últimos 3 meses, priorizando esses dois canais antes de qualquer ação genérica de "melhorar atendimento".'
+  },
+  {
+    n:'Insight 02', t:'Queda em agosto/2026 é o ponto mais crítico da série temporal',
+    problema:'A nota média de agosto/2026 (1,5) é a menor de toda a série de 8 meses, com 100% dos 4 feedbacks do mês classificados como negativos.',
+    evidencia:'Nenhum outro mês da série ultrapassa 66,7% de negativos; a média simples dos 8 meses é 44,6% negativo ao mês (42,2% no total do período).',
+    impacto:'Se a tendência de agosto persistir em setembro, o % negativo mensal da base pode ultrapassar o patamar histórico em mais de 30 pontos percentuais.',
+    acao:'CX deve revisar individualmente os 4 casos de agosto para identificar se há uma causa comum (ex.: incidente técnico, mudança de processo) antes de decidir se é ruído estatístico (n=4) ou início de tendência.'
+  },
+  {
+    n:'Insight 03', t:'Ausência de dado estruturado de produto é a maior lacuna analítica',
+    problema:'O campo product_or_service_name existe no schema exportado, mas está vazio em 100% das 45 linhas — impossibilitando responder oficialmente "qual produto gera mais atrito?", pergunta central do escopo de CX.',
+    evidencia:'Confirmado tanto na planilha tratada (coluna ausente) quanto na planilha bruta exportada (cabeçalho presente, valores vazios em todas as linhas).',
+    impacto:'Qualquer priorização por produto hoje depende de uma classificação heurística por palavras-chave no texto livre, sujeita a erro de classificação e a amostras muito pequenas por tópico (n=3 a 9).',
+    acao:'Tecnologia/Dados deve popular a tabela associativa de produto na próxima carga antes da próxima rodada de priorização; até lá, tratar o ranking de "tópicos derivados" (ex.: Pix com 66,7% negativo, n=3) como hipótese a validar, não como decisão de produto.'
+  }
+];
+const iw = document.getElementById('insights-wrap');
+insights.forEach(ins=>{
+  iw.innerHTML += `
+    <div class="insight">
+      <div class="idx">${ins.n}</div>
+      <h4>${ins.t}</h4>
+      <dl>
+        <dt>Problema</dt><dd>${ins.problema}</dd>
+        <dt>Evidência</dt><dd>${ins.evidencia}</dd>
+        <dt>Impacto</dt><dd>${ins.impacto}</dd>
+        <dt>Ação</dt><dd>${ins.acao}</dd>
+      </dl>
+    </div>`;
+});
+
+// ---- Recomendações por área (p4) ----
+const areas = [
+  {area:'Atendimento', itens:[
+    ['Auditar scripts e fluxo de escalonamento de Telefone e WhatsApp (últimos 3 meses)','Alta','% negativo Telefone+WhatsApp','Reduzir o % negativo nos dois canais de maior prioridade'],
+    ['Mapear causa dos 3 casos de Reclamação/Telefone com urgência crítica','Alta','Tempo até 1ª resposta (a implementar)','Eliminar a causa raiz das urgências críticas em Telefone'],
+  ]},
+  {area:'Tecnologia / Dados', itens:[
+    ['Popular a tabela associativa de produto (product_or_service_name) na próxima carga','Alta','% de linhas com produto preenchido','Habilitar análise por produto (hoje impossível)'],
+    ['Investigar causa técnica dos 4 casos negativos de agosto/2026','Alta','Nota média mensal','Confirmar se agosto é pontual ou tendência'],
+    ['Adicionar campo de tempo de resolução ao schema para permitir SLA','Média','Tempo médio de resolução','Habilitar medição de SLA'],
+  ]},
+  {area:'Produto', itens:[
+    ['Investigar hipótese de atrito em Pix (66,7% negativo, n=3) com dado estruturado antes de priorizar', 'Média','% negativo por produto (após correção de dados)'],
+    ['Revisar jornada de Aplicativo — maior volume entre canais com 50% de negativos', 'Média','CSAT do canal Aplicativo'],
+  ]},
+  {area:'CX', itens:[
+    ['Acompanhar CSAT e % negativo mensal como indicador contínuo (dashboard vivo)','Alta','CSAT mensal','Validar a hipótese antes de investir'],
+    ['Ampliar a amostra fictícia (hoje 45 registros) para reduzir a margem de incerteza dos percentuais','Média','N total de feedbacks','Identificar atritos na jornada do canal'],
+  ]},
+  {area:'Operações', itens:[
+    ['Avaliar horário/capacidade de atendimento na Agência (queixa de fila e horário aparece no texto livre)','Baixa','% negativo Agência','Visibilidade contínua da satisfação'],
+  ]},
+];
+const aw = document.getElementById('areas-wrap');
+areas.forEach(a=>{
+  let rows = a.itens.map(i=>`<tr><td>${i[0]}</td><td>${i[1]}</td><td>${i[2]}</td><td>${i[3]}</td></tr>`).join('');
+  aw.innerHTML += `
+    <div class="area-block">
+      <div class="area-head">Área responsável: ${a.area}</div>
+      <table>
+        <thead><tr><th style="width:55%">Recomendação</th><th style="width:15%">Prioridade</th><th>KPI a monitorar</th><th>Impacto esperado</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+});
+</script>
+</body>
+</html>

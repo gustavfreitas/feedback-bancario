@@ -20,6 +20,8 @@
 - [3. Modelo de dados](#3-modelo-de-dados)
 - [4. Metodologia](#4-metodologia)
 - [5. Resultado — Conclusão da análise](#5-resultado--conclusão-da-análise)
+- [Dashboard e relatório final](#dashboard-e-relatório-final)
+- [Como reproduzir](#como-reproduzir)
 - [6. Estrutura do repositório](#6-estrutura-do-repositório)
 - [7. Limitações](#7-limitações)
 - [Autor](#-autor)
@@ -152,15 +154,45 @@ Insights e Recomendações) está em **[`docs/CONCLUSAO-ANALISE.md`](docs/CONCLU
   <img src="assets/prints/customer-experience.png" alt="Print da análise de customer experience" width="500">
 </p>
 
+### Dashboard e relatório final
+
+| Entregável | Arquivo |
+|---|---|
+| Relatório final (dataset, KPIs, insights, problemas, recomendações, limitações) | [`RELATORIO.md`](RELATORIO.md) |
+| Dashboard HTML em 4 páginas (Visão Executiva, Experiência do Cliente, Análise de Problemas, Recomendações) | [`docs/dashboard.html`](docs/dashboard.html) |
+| Relatório Power BI | [`docs/Relatorio.pbix`](docs/Relatorio.pbix) |
+| Base consolidada para Power BI (fato + agregados) | [`load/CX_Bancario_PowerBI.xlsx`](load/CX_Bancario_PowerBI.xlsx) |
+| Auditoria de dados | [`docs/AUDITORIA-DADOS.md`](docs/AUDITORIA-DADOS.md) |
+
+**KPIs principais (n = 45, dados fictícios):** CSAT 37,8% (nota ≥ 4) · nota média 3,0/5 · 42,2% negativo · taxa de reclamação 26,7%. NPS não é calculável (escala de 1 a 5).
+
+**Prioridades:** Reclamação via Telefone (score 0,742) e via WhatsApp (0,733) são as únicas classificadas como Críticas. Score = volume 30% + impacto 30% + urgência 25% + recorrência 15%, normalizados entre os 12 grupos tipo × canal.
+
+> ⚠️ Todos os dados são sintéticos e não representam uma instituição financeira real.
+
+### Como reproduzir
+
+```bash
+pip install -r analysis/requirements.txt
+python analysis/full_analysis.py
+```
+
+Lê `load/relatorio_completo_etl.xlsx` e gera `analysis/output/dataset_tratado.csv` e `analysis/output/dashboard_data.json`. O dashboard HTML usa Chart.js via CDN, portanto precisa de internet para abrir.
+
 ---
 
 ## 6. Estrutura do Repositório
 
 ```
 feedback-bancario/
+├── RELATORIO.md                   # Relatório final de CX
+├── analysis/                      # Script reproduzível da análise
 ├── docs/
 │   ├── PROMPT-METODOLOGIA.md      # Prompt mestre da análise
-│   └── CONCLUSAO-ANALISE.md       # Resultado final da análise
+│   ├── CONCLUSAO-ANALISE.md       # Resultado da análise (1ª versão)
+│   ├── AUDITORIA-DADOS.md         # Auditoria de qualidade dos dados
+│   ├── dashboard.html             # Dashboard em 4 páginas
+│   └── Relatorio.pbix             # Relatório Power BI
 ├── tables/                        # Criação das tabelas (schema)
 ├── triggers/                      # Trigger de updated_at
 ├── seeds/                         # Dados fictícios (seeds)
