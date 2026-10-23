@@ -627,7 +627,7 @@ const insights = [
   {
     n:'Insight 02', t:'Queda em agosto/2026 é o ponto mais crítico da série temporal',
     problema:'A nota média de agosto/2026 (1,5) é a menor de toda a série de 8 meses, com 100% dos 4 feedbacks do mês classificados como negativos.',
-    evidencia:'Nenhum outro mês da série ultrapassa 66,7% de negativos; a média geral do período é 34,7% ao mês.',
+    evidencia:'Nenhum outro mês da série ultrapassa 66,7% de negativos; a média simples dos 8 meses é 44,6% negativo ao mês (42,2% no total do período).',
     impacto:'Se a tendência de agosto persistir em setembro, o % negativo mensal da base pode ultrapassar o patamar histórico em mais de 30 pontos percentuais.',
     acao:'CX deve revisar individualmente os 4 casos de agosto para identificar se há uma causa comum (ex.: incidente técnico, mudança de processo) antes de decidir se é ruído estatístico (n=4) ou início de tendência.'
   },
@@ -657,34 +657,34 @@ insights.forEach(ins=>{
 // ---- Recomendações por área (p4) ----
 const areas = [
   {area:'Atendimento', itens:[
-    ['Auditar scripts e fluxo de escalonamento de Telefone e WhatsApp (últimos 3 meses)','Alta','% negativo Telefone+WhatsApp'],
-    ['Mapear causa dos 3 casos de Reclamação/Telefone com urgência crítica','Alta','Tempo até 1ª resposta (a implementar)'],
+    ['Auditar scripts e fluxo de escalonamento de Telefone e WhatsApp (últimos 3 meses)','Alta','% negativo Telefone+WhatsApp','Reduzir o % negativo nos dois canais de maior prioridade'],
+    ['Mapear causa dos 3 casos de Reclamação/Telefone com urgência crítica','Alta','Tempo até 1ª resposta (a implementar)','Eliminar a causa raiz das urgências críticas em Telefone'],
   ]},
   {area:'Tecnologia / Dados', itens:[
-    ['Popular a tabela associativa de produto (product_or_service_name) na próxima carga','Alta','% de linhas com produto preenchido'],
-    ['Investigar causa técnica dos 4 casos negativos de agosto/2026','Alta','Nota média mensal'],
-    ['Adicionar campo de tempo de resolução ao schema para permitir SLA','Média','Tempo médio de resolução'],
+    ['Popular a tabela associativa de produto (product_or_service_name) na próxima carga','Alta','% de linhas com produto preenchido','Habilitar análise por produto (hoje impossível)'],
+    ['Investigar causa técnica dos 4 casos negativos de agosto/2026','Alta','Nota média mensal','Confirmar se agosto é pontual ou tendência'],
+    ['Adicionar campo de tempo de resolução ao schema para permitir SLA','Média','Tempo médio de resolução','Habilitar medição de SLA'],
   ]},
   {area:'Produto', itens:[
     ['Investigar hipótese de atrito em Pix (66,7% negativo, n=3) com dado estruturado antes de priorizar', 'Média','% negativo por produto (após correção de dados)'],
     ['Revisar jornada de Aplicativo — maior volume entre canais com 50% de negativos', 'Média','CSAT do canal Aplicativo'],
   ]},
   {area:'CX', itens:[
-    ['Acompanhar CSAT e % negativo mensal como indicador contínuo (dashboard vivo)','Alta','CSAT mensal'],
-    ['Ampliar a amostra fictícia (hoje 45 registros) para reduzir a margem de incerteza dos percentuais','Média','N total de feedbacks'],
+    ['Acompanhar CSAT e % negativo mensal como indicador contínuo (dashboard vivo)','Alta','CSAT mensal','Validar a hipótese antes de investir'],
+    ['Ampliar a amostra fictícia (hoje 45 registros) para reduzir a margem de incerteza dos percentuais','Média','N total de feedbacks','Identificar atritos na jornada do canal'],
   ]},
   {area:'Operações', itens:[
-    ['Avaliar horário/capacidade de atendimento na Agência (queixa de fila e horário aparece no texto livre)','Baixa','% negativo Agência'],
+    ['Avaliar horário/capacidade de atendimento na Agência (queixa de fila e horário aparece no texto livre)','Baixa','% negativo Agência','Visibilidade contínua da satisfação'],
   ]},
 ];
 const aw = document.getElementById('areas-wrap');
 areas.forEach(a=>{
-  let rows = a.itens.map(i=>`<tr><td>${i[0]}</td><td>${i[1]}</td><td>${i[2]}</td></tr>`).join('');
+  let rows = a.itens.map(i=>`<tr><td>${i[0]}</td><td>${i[1]}</td><td>${i[2]}</td><td>${i[3]}</td></tr>`).join('');
   aw.innerHTML += `
     <div class="area-block">
-      <div class="area-head">${a.area}</div>
+      <div class="area-head">Área responsável: ${a.area}</div>
       <table>
-        <thead><tr><th style="width:55%">Recomendação</th><th style="width:15%">Prioridade</th><th>KPI a monitorar</th></tr></thead>
+        <thead><tr><th style="width:55%">Recomendação</th><th style="width:15%">Prioridade</th><th>KPI a monitorar</th><th>Impacto esperado</th></tr></thead>
         <tbody>${rows}</tbody>
       </table>
     </div>`;
