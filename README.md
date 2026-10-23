@@ -164,6 +164,14 @@ Insights e Recomendações) está em **[`docs/CONCLUSAO-ANALISE.md`](docs/CONCLU
 | Base consolidada para Power BI (fato + agregados) | [`load/CX_Bancario_PowerBI.xlsx`](load/CX_Bancario_PowerBI.xlsx) |
 | Auditoria de dados | [`docs/AUDITORIA-DADOS.md`](docs/AUDITORIA-DADOS.md) |
 
+### Prévia do dashboard
+
+| 01 Visão executiva | 02 Customer experience |
+|---|---|
+| <img src="assets/prints/dashboard-pagina-1.png" width="420"> | <img src="assets/prints/dashboard-pagina-2.png" width="420"> |
+| **03 Análise de problemas** | **04 Recomendações** |
+| <img src="assets/prints/dashboard-pagina-3.png" width="420"> | <img src="assets/prints/dashboard-pagina-4.png" width="420"> |
+
 **KPIs principais (n = 45, dados fictícios):** CSAT 37,8% (nota ≥ 4) · nota média 3,0/5 · 42,2% negativo · taxa de reclamação 26,7%. NPS não é calculável (escala de 1 a 5).
 
 **Prioridades:** Reclamação via Telefone (score 0,742) e via WhatsApp (0,733) são as únicas classificadas como Críticas. Score = volume 30% + impacto 30% + urgência 25% + recorrência 15%, normalizados entre os 12 grupos tipo × canal.

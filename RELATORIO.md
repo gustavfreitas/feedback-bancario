@@ -46,8 +46,8 @@ Fonte: [`gustavfreitas/feedback-bancario`](https://github.com/gustavfreitas/feed
 ## 3. Top 5 Insights
 
 **Insight 01 — Reclamações por Telefone e WhatsApp são o único risco recorrente**
-- **Evidência:** os dois grupos têm os maiores scores de prioridade (0,74 e 0,73) entre 12 combinações Tipo×Canal — 3 casos cada, nota média 1,33, urgência média acima de 2,3 (escala 0–3), e recorrência em 2–3 meses distintos.
-- **Impacto:** juntos representam metade dos casos de prioridade Alta/Crítica identificados.
+- **Evidência:** os dois grupos têm os maiores scores de prioridade (0,74 e 0,73) entre 12 combinações Tipo×Canal — 3 casos cada, nota média 1,33, urgência média de 2,3 a 2,7 (escala 0–3), e recorrência em 2–3 meses distintos.
+- **Impacto:** juntos representam 6 dos 19 casos de Reclamação/Problema Técnico (cerca de um terço), todos com urgência alta ou crítica.
 - **Recomendação:** Atendimento deve auditar scripts e fluxo de escalonamento desses dois canais nos últimos 3 meses antes de qualquer ação genérica de "melhorar atendimento".
 
 **Insight 02 — Agosto/2026 é o ponto mais crítico da série temporal**

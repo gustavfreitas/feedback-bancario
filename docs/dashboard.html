@@ -620,15 +620,15 @@ const insights = [
   {
     n:'Insight 01', t:'Reclamações por Telefone e WhatsApp são o único risco recorrente',
     problema:'Reclamações via Telefone e WhatsApp concentram os dois maiores scores de prioridade (0,74 e 0,73) entre as 12 combinações Tipo×Canal analisadas.',
-    evidencia:'3 reclamações por canal, nota média 1,33, urgência média acima de 2,3 (escala 0–3), e recorrência em 2–3 meses distintos — os únicos dois grupos com recorrência multi-mês entre os problemas de alta prioridade.',
-    impacto:'Juntos, esses dois grupos representam 6 dos 12 casos de Reclamação/Problema Técnico com prioridade Alta ou Crítica.',
+    evidencia:'3 reclamações por canal, nota média 1,33, urgência média de 2,3 a 2,7 (escala 0–3), e recorrência em 2–3 meses distintos — os únicos dois grupos com recorrência multi-mês entre os problemas de alta prioridade.',
+    impacto:'Juntos, esses dois grupos representam 6 dos 19 casos de Reclamação/Problema Técnico, todos com urgência alta ou crítica.',
     acao:'Área de Atendimento deve auditar os scripts e o fluxo de escalonamento de Telefone e WhatsApp nos últimos 3 meses, priorizando esses dois canais antes de qualquer ação genérica de "melhorar atendimento".'
   },
   {
     n:'Insight 02', t:'Queda em agosto/2026 é o ponto mais crítico da série temporal',
     problema:'A nota média de agosto/2026 (1,5) é a menor de toda a série de 8 meses, com 100% dos 4 feedbacks do mês classificados como negativos.',
     evidencia:'Nenhum outro mês da série ultrapassa 66,7% de negativos; a média simples dos 8 meses é 44,6% negativo ao mês (42,2% no total do período).',
-    impacto:'Se a tendência de agosto persistir em setembro, o % negativo mensal da base pode ultrapassar o patamar histórico em mais de 30 pontos percentuais.',
+    impacto:'Com apenas 4 feedbacks no mês, é um alerta e não uma tendência confirmada; setembro e outubro dirão se há mudança real.',
     acao:'CX deve revisar individualmente os 4 casos de agosto para identificar se há uma causa comum (ex.: incidente técnico, mudança de processo) antes de decidir se é ruído estatístico (n=4) ou início de tendência.'
   },
   {
@@ -666,15 +666,15 @@ const areas = [
     ['Adicionar campo de tempo de resolução ao schema para permitir SLA','Média','Tempo médio de resolução','Habilitar medição de SLA'],
   ]},
   {area:'Produto', itens:[
-    ['Investigar hipótese de atrito em Pix (66,7% negativo, n=3) com dado estruturado antes de priorizar', 'Média','% negativo por produto (após correção de dados)'],
-    ['Revisar jornada de Aplicativo — maior volume entre canais com 50% de negativos', 'Média','CSAT do canal Aplicativo'],
+    ['Investigar hipótese de atrito em Pix (66,7% negativo, n=3) com dado estruturado antes de priorizar','Média','% negativo por produto (após correção de dados)','Validar a hipótese antes de investir em Pix'],
+    ['Revisar jornada de Aplicativo — maior volume entre canais com 50% de negativos','Média','CSAT do canal Aplicativo','Identificar atritos na jornada do canal Aplicativo'],
   ]},
   {area:'CX', itens:[
-    ['Acompanhar CSAT e % negativo mensal como indicador contínuo (dashboard vivo)','Alta','CSAT mensal','Validar a hipótese antes de investir'],
-    ['Ampliar a amostra fictícia (hoje 45 registros) para reduzir a margem de incerteza dos percentuais','Média','N total de feedbacks','Identificar atritos na jornada do canal'],
+    ['Acompanhar CSAT e % negativo mensal como indicador contínuo (dashboard vivo)','Alta','CSAT mensal','Visibilidade contínua da satisfação'],
+    ['Ampliar a amostra fictícia (hoje 45 registros) para reduzir a margem de incerteza dos percentuais','Média','N total de feedbacks','Reduzir a incerteza estatística dos percentuais'],
   ]},
   {area:'Operações', itens:[
-    ['Avaliar horário/capacidade de atendimento na Agência (queixa de fila e horário aparece no texto livre)','Baixa','% negativo Agência','Visibilidade contínua da satisfação'],
+    ['Avaliar horário/capacidade de atendimento na Agência (queixa de fila e horário aparece no texto livre)','Baixa','% negativo Agência','Reduzir queixas de fila e horário na Agência'],
   ]},
 ];
 const aw = document.getElementById('areas-wrap');
